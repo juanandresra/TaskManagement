@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigService, ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 // Modules
 
@@ -9,6 +10,8 @@ import { ProjectModule } from 'src/modules/project/project.module';
 import { TaskModule } from 'src/modules/task/task.module';
 import { UserModule } from 'src/modules/user/user.module';
 
+const configService = new ConfigService({ envFilePath: '.env' });
+
 @Module({
   imports: [
     CommentModule,
@@ -17,6 +20,11 @@ import { UserModule } from 'src/modules/user/user.module';
     TaskModule,
     UserModule,
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
+    JwtModule.register({
+      global: true,
+      secret: configService.get('JWT_SECRET'),
+      signOptions: { expiresIn: configService.get('JWT_EXPIRES_IN') }
+    })
   ]
 })
 export class AppModule { }
