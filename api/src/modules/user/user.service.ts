@@ -58,6 +58,7 @@ export class UserService {
     }
 
     async register(user: Prisma.UserCreateInput): Promise<{ token: string }> {
+        if (await this.prisma.user.count({ where: { email: user.email } })) { throw new ConflictException('El email ya existe'); }
         const hashedPassword = await bcrypt.hash(user.password, 10);
         const result = await this.prisma.user.create({ data: { ...user, password: hashedPassword } });
         return { token: this.jwtService.sign({ id: result.id }) };
