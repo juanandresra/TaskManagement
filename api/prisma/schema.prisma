@@ -3,6 +3,71 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  role          Role           @default(MEMBER)
+  tasks         Task[]         @relation("UserTasks")
+  comments      Comment[]      @relation("UserComments")
+  projects      Project[]      @relation("UserProjects")
+  notifications Notification[]
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tasks       Task[]
+  members     User[]   @relation("UserProjects")
+}
+
+model Task {
+  id           String    @id @default(uuid())
+  title        String
+  description  String?
+  dueDate      DateTime?
+  status       Status    @default(TODO)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  projectId    String
+  project      Project   @relation(fields: [projectId], references: [id])
+  assignedTo   User?     @relation("UserTasks", fields: [assignedToId], references: [id])
+  assignedToId String?
+  comments     Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id])
+  userId    String
+  user      User     @relation("UserComments", fields: [userId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  message   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+enum Status {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum Role {
+  ADMIN
+  MEMBER
 }
