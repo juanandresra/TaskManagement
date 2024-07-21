@@ -18,7 +18,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={inter.className}>
         <Providers>
           <Navbar></Navbar>
-          {children}
+          <div className="p-4">
+            {children}
+          </div>
         </Providers>
       </body>
     </html>

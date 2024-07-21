@@ -1,18 +1,17 @@
-"use client";
-
-import { useSession } from "next-auth/react";
+import Projects from "@/components/Projects";
+// import { useSession } from "next-auth/react";
 
 export default function HomePage() {
-    const { data: session, status } = useSession();
+    // const { data: session, status } = useSession();
     return (
         <div>
-            <h1>Dashboard</h1>
-            <pre>
+            {/* <pre>
                 {JSON.stringify(session)}
-            </pre>
-            <pre>
+            </pre> */}
+            {/* <pre>
                 {JSON.stringify(status)}
-            </pre>
+            </pre> */}
+            <Projects></Projects>
         </div>
     )
 }
