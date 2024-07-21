@@ -75,7 +75,7 @@ const Projects = () => {
                         <button className="bg-blue-500 text-white rounded p-2" type="submit">Crear Proyecto</button>
                     </form>
                 </div>
-                {projects.map((project: any) => (
+                {projects?.map((project: any) => (
                     <Link className="bg-white shadow rounded p-4 flex flex-col gap-2" key={project.id} href={"/project/" + project.id}>
                         <h2 className="font-semibold">{project.name}</h2>
                         <p className="text-sm">{project.description}</p>

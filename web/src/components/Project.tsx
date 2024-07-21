@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 import { IoIosArrowBack } from "react-icons/io";
 
-
 async function createTask(task: { title: string; description: string; dueDate: string }, projectId: string) {
 
     task.dueDate = new Date(task.dueDate).toISOString();

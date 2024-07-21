@@ -1,12 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import Comment from "./Comment";
 
+
 async function deleteComment(commentId: string) {
+    const session: any = await getSession();
     await fetch(`http://localhost:4000/comments/${commentId}`, {
         method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${session?.user.token}` }
+
     });
 }
 
@@ -14,12 +18,13 @@ const Comments = ({ taskId }: { taskId: string }) => {
     const [comments, setComments] = useState<any[]>([]);
     const [newComment, setNewComment] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { data: session } = useSession();
-    const user: any = session?.user;
 
 
     async function getComments(taskId: string) {
-        const res = await fetch(`http://localhost:4000/tasks/${taskId}/comments`);
+        const session: any = await getSession();
+        const res = await fetch(`http://localhost:4000/tasks/${taskId}/comments`, {
+            headers: { 'Authorization': `Bearer ${session?.user.token}` }
+        });
         const { data } = await res.json();
         setComments(data);
     }
@@ -27,18 +32,16 @@ const Comments = ({ taskId }: { taskId: string }) => {
     useEffect(() => { getComments(taskId) }, [taskId]);
 
     async function handleAddComment(e: React.FormEvent<HTMLFormElement>) {
+        const session: any = await getSession();
         e.preventDefault();
         if (newComment.trim() === "") return;
-
         setIsLoading(true);
-
         const commentData = { content: newComment, taskId: taskId };
-
         const res = await fetch('http://localhost:4000/comments', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`,
+                'Authorization': `Bearer ${session?.user.token}`
             },
             body: JSON.stringify(commentData),
         });
@@ -51,7 +54,7 @@ const Comments = ({ taskId }: { taskId: string }) => {
             console.error('Failed to add comment');
         }
 
-        setIsLoading(false); // Ocultar el indicador de carga
+        setIsLoading(false);
     }
 
     const handleCommentDeleted = (commentId: string) => {
@@ -81,8 +84,8 @@ const Comments = ({ taskId }: { taskId: string }) => {
                 </button>
             </form>
             <div className="flex flex-col gap-4">
-                {comments.map((comment) => (
-                    <Comment key={comment.id} comment={comment} onCommentDeleted={handleCommentDeleted} onCommentUpdated={handleCommentUpdated}/>
+                {comments?.map((comment) => (
+                    <Comment key={comment.id} comment={comment} onCommentDeleted={handleCommentDeleted} onCommentUpdated={handleCommentUpdated} />
                 ))}
             </div>
         </div>

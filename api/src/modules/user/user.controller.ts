@@ -17,7 +17,6 @@ export class UserController {
     @Get()
     async getAllUsers(@Req() req: Request, @Res() res: Response) {
         try {
-            console.log("PASO POR ACA")
             if (req['user'].role == 'user') return sendResponse(res, [await this.userService.getUserById(req['user'].id)]);
             const result = await this.userService.getUsers();
             return sendResponse(res, result.map(r => {

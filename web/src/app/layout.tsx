@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from '@/components/Providers';
 import Navbar from "@/components/Navbar";
+import Notification from "@/components/Notification";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <div className="container mx-auto">
                 {children}
               </div>
-            </div>
+            </div>            
+            <Notification></Notification>
           </Providers>
         </div>
       </body>

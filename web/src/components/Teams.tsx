@@ -4,7 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 
 async function getTeams() {
-    const res = await fetch('http://localhost:4000/teams');
+    const session: any = await getSession();
+    const res = await fetch('http://localhost:4000/teams', {
+        headers: { 'Authorization': `Bearer ${session?.user.token}` }
+    });
     const { data } = await res.json();
     return data;
 }
@@ -20,6 +23,7 @@ async function getUsers() {
 
 async function getTeamMembers(teamId: string) {
     const session: any = await getSession();
+    console.log(session)
     const res = await fetch(`http://localhost:4000/teams/${teamId}`, {
         headers: { 'Authorization': `Bearer ${session?.user.token}` }
     });
@@ -78,7 +82,7 @@ const Teams = () => {
             const usersData = await getUsers();
             setUsers(usersData);
             const teamsWithMembersData = await Promise.all(
-                teamsData.map(async (team: any) => {
+                teamsData?.map(async (team: any) => {
                     const members = await getTeamMembers(team.id);
                     return { ...team, members };
                 })

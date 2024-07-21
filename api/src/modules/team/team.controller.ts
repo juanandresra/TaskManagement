@@ -1,14 +1,16 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { TeamService } from 'src/modules/team/team.service';
 import { AssignTeamDto, CreateTeamDto, UpdateTeamDto } from './team.validate';
 import { sendResponse } from 'src/utils/httpResponse.util';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('teams')
 export class TeamController {
 
     constructor(private readonly teamService: TeamService) { }
 
+    @UseGuards(AuthGuard)
     @Post()
     async createTeam(@Res() res: Response, @Body() createTeamDto: CreateTeamDto) {
         try {
@@ -18,6 +20,7 @@ export class TeamController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Post(':id/assign')
     async assign(@Res() res: Response, @Param('id') id: string, @Body() assignDto: AssignTeamDto) {
         try {
@@ -27,6 +30,7 @@ export class TeamController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Post(':id/unassign')
     async unassign(@Res() res: Response, @Param('id') id: string, @Body() assignDto: AssignTeamDto) {
         try {
@@ -36,6 +40,7 @@ export class TeamController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Get()
     async getAllTeams(@Res() res: Response) {
         try {
@@ -45,6 +50,7 @@ export class TeamController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Get(':id')
     async getTeamById(@Res() res: Response, @Param('id') id: string) {
         try {
@@ -54,6 +60,7 @@ export class TeamController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Put(':id')
     async updateTeam(@Res() res: Response, @Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
         try {
@@ -63,6 +70,7 @@ export class TeamController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Delete(':id')
     async deleteTeam(@Res() res: Response, @Param('id') id: string) {
         try {

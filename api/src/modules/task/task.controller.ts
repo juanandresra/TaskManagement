@@ -1,14 +1,16 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { TaskService } from 'src/modules/task/task.service';
 import { CreateTaskDto, UpdateTaskDto } from './task.validate';
 import { sendResponse } from 'src/utils/httpResponse.util';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('tasks')
 export class TaskController {
 
     constructor(private readonly taskService: TaskService) { }
 
+    @UseGuards(AuthGuard)
     @Post()
     async createTask(@Res() res: Response, @Body() createTaskDto: CreateTaskDto) {
         try {
@@ -18,6 +20,7 @@ export class TaskController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Post(':id/assign')
     async assignTask(@Res() res: Response, @Param('id') id: string, @Body('userId') userId?: string, @Body('teamId') teamId?: string) {
         try {
@@ -27,6 +30,7 @@ export class TaskController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Post(':id/unassign')
     async unassignTask(@Res() res: Response, @Param('id') id: string) {
         try {
@@ -36,6 +40,7 @@ export class TaskController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Get()
     async getAllTasks(@Res() res: Response) {
         try {
@@ -45,6 +50,7 @@ export class TaskController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Get(':id')
     async getTaskById(@Res() res: Response, @Param('id') id: string) {
         try {
@@ -54,6 +60,7 @@ export class TaskController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Get(':id/comments')
     async getComments(@Res() res: Response, @Param('id') id: string) {
         try {
@@ -63,6 +70,7 @@ export class TaskController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Put(':id')
     async updateTask(@Res() res: Response, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
         try {
@@ -72,6 +80,7 @@ export class TaskController {
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
     };
 
+    @UseGuards(AuthGuard)
     @Delete(':id')
     async deleteTask(@Res() res: Response, @Param('id') id: string) {
         try {
