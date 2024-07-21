@@ -5,17 +5,17 @@ import { JwtModule } from '@nestjs/jwt';
 // Modules
 
 import { CommentModule } from 'src/modules/comment/comment.module';
-import { NotificationModule } from 'src/modules/notification/notification.module';
 import { ProjectModule } from 'src/modules/project/project.module';
 import { TaskModule } from 'src/modules/task/task.module';
 import { UserModule } from 'src/modules/user/user.module';
+import { TeamModule } from './modules/team/team.module';
 
 const configService = new ConfigService({ envFilePath: '.env' });
 
 @Module({
   imports: [
+    TeamModule,
     CommentModule,
-    NotificationModule,
     ProjectModule,
     TaskModule,
     UserModule,

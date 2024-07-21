@@ -17,25 +17,7 @@ export class CommentController {
             return sendResponse(res, result);
         }
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
-    }
-
-    @Get()
-    async getAllComments(@Res() res: Response) {
-        try {
-            const result = await this.commentService.getAllComments();
-            return sendResponse(res, result);
-        }
-        catch (error) { return sendResponse(res, null, error.status, error.message || error); }
-    }
-
-    @Get(':id')
-    async getCommentById(@Res() res: Response, @Param('id') id: string) {
-        try {
-            const result = await this.commentService.getCommentById(id);
-            return sendResponse(res, result);
-        }
-        catch (error) { return sendResponse(res, null, error.status, error.message || error); }
-    }
+    };
 
     @Put(':id')
     async updateComment(@Res() res: Response, @Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
@@ -44,7 +26,7 @@ export class CommentController {
             return sendResponse(res, result);
         }
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
-    }
+    };
 
     @Delete(':id')
     async deleteComment(@Res() res: Response, @Param('id') id: string) {
@@ -53,6 +35,6 @@ export class CommentController {
             return sendResponse(res, result);
         }
         catch (error) { return sendResponse(res, null, error.status, error.message || error); }
-    }
+    };
 
 }

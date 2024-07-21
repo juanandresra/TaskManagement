@@ -11,29 +11,19 @@ export class CommentService {
         return this.prisma.comment.create({
             data,
         });
-    }
-
-    async getAllComments(): Promise<Comment[]> {
-        return this.prisma.comment.findMany();
-    }
-
-    async getCommentById(id: string): Promise<Comment | null> {
-        return this.prisma.comment.findUnique({
-            where: { id },
-        });
-    }
+    };
 
     async updateComment(id: string, data: { content?: string }): Promise<Comment> {
         return this.prisma.comment.update({
             where: { id },
             data,
         });
-    }
+    };
 
     async deleteComment(id: string): Promise<Comment> {
         return this.prisma.comment.delete({
             where: { id },
         });
-    }
+    };
 
 }

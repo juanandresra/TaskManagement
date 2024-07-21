@@ -15,14 +15,7 @@ export class CreateTaskDto {
     dueDate: Date;
 
     @IsNotEmpty()
-    status: $Enums.Status;
-
-    @IsOptional()
-    @IsNotEmpty()
     projectId: string;
-    
-    @IsNotEmpty()
-    assignedToId: string;
 
 };
 

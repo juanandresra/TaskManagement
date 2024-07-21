@@ -16,7 +16,10 @@ export class ProjectService {
     }
 
     async getProjectById(id: string): Promise<Project | null> {
-        return this.prisma.project.findUniqueOrThrow({ where: { id } });
+        return this.prisma.project.findUniqueOrThrow({
+            where: { id },
+            include: { tasks: true }
+        });
     }
 
     async updateProject(id: string, data: { name?: string; description?: string }): Promise<Project> {

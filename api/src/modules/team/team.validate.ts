@@ -45,3 +45,9 @@ export class UpdateTeamDto {
     @IsNotEmpty()
     assignedToId?: string;
 };
+
+export class AssignTeamDto {
+    @IsNotEmpty()
+    @IsString()
+    userId: string;
+}
