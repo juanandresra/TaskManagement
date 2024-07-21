@@ -12,13 +12,16 @@ export class ProjectService {
     }
 
     async getAllProjects(): Promise<Project[]> {
-        return this.prisma.project.findMany();
+        return this.prisma.project.findMany({ orderBy: { createdAt: 'desc'}});
     }
 
     async getProjectById(id: string): Promise<Project | null> {
         return this.prisma.project.findUniqueOrThrow({
             where: { id },
-            include: { tasks: true }
+            include: { tasks: {
+                include: { team: true, assignedTo: true },
+                orderBy: { createdAt: 'desc' }
+            } }
         });
     }
 

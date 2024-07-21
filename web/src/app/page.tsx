@@ -4,13 +4,8 @@ import Projects from "@/components/Projects";
 export default function HomePage() {
     // const { data: session, status } = useSession();
     return (
-        <div>
-            {/* <pre>
-                {JSON.stringify(session)}
-            </pre> */}
-            {/* <pre>
-                {JSON.stringify(status)}
-            </pre> */}
+        <div className="flex flex-col gap-4">
+            <h1>Proyectos</h1>
             <Projects></Projects>
         </div>
     )

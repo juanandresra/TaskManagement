@@ -16,12 +16,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" suppressHydrationWarning={true}>
       <head />
       <body className={inter.className}>
-        <Providers>
-          <Navbar></Navbar>
-          <div className="p-4">
-            {children}
-          </div>
-        </Providers>
+        <div className="antialiased bg-gray-100 absolute inset-0 flex flex-col">
+          <Providers>
+            <Navbar></Navbar>
+            <div className="flex flex-col overflow-auto p-4">
+              <div className="container mx-auto">
+                {children}
+              </div>
+            </div>
+          </Providers>
+        </div>
       </body>
     </html>
   );

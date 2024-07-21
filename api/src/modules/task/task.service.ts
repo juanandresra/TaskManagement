@@ -34,7 +34,9 @@ export class TaskService {
   };
 
   async getAllTasks(): Promise<Task[]> {
-    return this.prisma.task.findMany();
+    return this.prisma.task.findMany({
+      orderBy: { createdAt: 'desc'}
+    });
   };
 
   async getTaskById(id: string): Promise<Task | null> {
@@ -45,7 +47,11 @@ export class TaskService {
   };
 
   async getComments(taskId: string): Promise<any[]> {
-    return this.prisma.comment.findMany({ where: { taskId }, select: {id: true, content: true, createdAt: true, user: { select: { id: true, firstName: true, lastName: true, email: true } } } });
+    return this.prisma.comment.findMany({
+      where: { taskId },
+      select: {id: true, content: true, createdAt: true, user: { select: { id: true, firstName: true, lastName: true, email: true } } }, 
+      orderBy: { createdAt: 'desc'}
+    });
   };
 
   async updateTask(id: string, data: { title?: string; description?: string; dueDate?: Date; status?: $Enums.Status; projectId?: string; assignedToId?: string }): Promise<Task> {

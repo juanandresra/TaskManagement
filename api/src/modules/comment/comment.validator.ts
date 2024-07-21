@@ -11,10 +11,6 @@ export class CreateCommentnDto {
     @IsString()
     taskId: string;
 
-    @IsNotEmpty()
-    @IsString()
-    userId: string;
-
 };
 
 export class UpdateCommentDto {

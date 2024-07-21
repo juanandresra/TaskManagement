@@ -13,16 +13,16 @@ export class CommentService {
         });
     };
 
-    async updateComment(id: string, data: { content?: string }): Promise<Comment> {
+    async updateComment(id: string, data: { content?: string }, userId: string): Promise<Comment> {
         return this.prisma.comment.update({
-            where: { id },
+            where: { id, userId },
             data,
         });
     };
 
-    async deleteComment(id: string): Promise<Comment> {
+    async deleteComment(id: string, userId: string): Promise<Comment> {
         return this.prisma.comment.delete({
-            where: { id },
+            where: { id, userId },
         });
     };
 
