@@ -49,12 +49,20 @@ export class UserService {
         return !!deletedUser;
     }
 
-    async login(loginUserDto: LoginUserDto): Promise<{ token: string }> {
+    async login(loginUserDto: LoginUserDto): Promise<{}> {
         const user = await this.prisma.user.findFirst({ where: { email: loginUserDto.identifier } });
         if (!user) { throw new UnauthorizedException('Usuario no encontrado'); }
         const isPasswordValid = await bcrypt.compare(loginUserDto.password, user.password);
         if (!isPasswordValid) { throw new UnauthorizedException('Contraseña equivocada'); }
-        return { token: this.jwtService.sign({ id: user.id }) };
+        const token = this.jwtService.sign({ id: user.id });
+        return {
+            id: user.id,
+            token,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role            
+        };
     }
 
     async register(user: Prisma.UserCreateInput): Promise<{ token: string }> {

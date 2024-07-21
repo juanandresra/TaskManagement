@@ -13,13 +13,21 @@ model User {
   password      String
   firstName     String
   lastName      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  role          Role           @default(MEMBER)
-  tasks         Task[]         @relation("UserTasks")
-  comments      Comment[]      @relation("UserComments")
-  projects      Project[]      @relation("UserProjects")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  role          Role            @default(MEMBER)
+  tasks         Task[]          @relation("UserTasks")
+  comments      Comment[]       @relation("UserComments")
+  projects      Project[]       @relation("UserProjects")
   notifications Notification[]
+  teams         Team[]          @relation("TeamMembers")
+}
+
+model Team {
+  id            String         @id @default(uuid())
+  name          String
+  members       User[]         @relation("TeamMembers")
+  tasks         Task[]
 }
 
 model Project {
@@ -44,6 +52,8 @@ model Task {
   project      Project   @relation(fields: [projectId], references: [id])
   assignedTo   User?     @relation("UserTasks", fields: [assignedToId], references: [id])
   assignedToId String?
+  team         Team?     @relation(fields: [teamId], references: [id])
+  teamId       String?
   comments     Comment[]
 }
 
